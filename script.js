@@ -1,53 +1,62 @@
-// Variables
-let interval;
-let startTime;
-let elapsedTime = 0;
-let isRunning = false;
-
-// Elements
-const minutesElement = document.getElementById('minutes');
-const secondsElement = document.getElementById('seconds');
-const millisecondsElement = document.getElementById('milliseconds');
-const startStopButton = document.getElementById('startStopButton');
-const resetButton = document.getElementById('resetButton');
-
-// Functions
-function updateTime() {
-  const currentTime = Date.now();
-  const timeDifference = currentTime - startTime + elapsedTime;
-  const minutes = Math.floor(timeDifference / 60000);
-  const seconds = Math.floor((timeDifference % 60000) / 1000);
-  const milliseconds = timeDifference % 1000;
-
-  minutesElement.textContent = String(minutes).padStart(2, '0');
-  secondsElement.textContent = String(seconds).padStart(2, '0');
-  millisecondsElement.textContent = String(milliseconds).padStart(3, '0');
-}
-
-function startStopTimer() {
-  if (isRunning) {
-    clearInterval(interval);
-  } else {
-    startTime = Date.now() - elapsedTime;
-    interval = setInterval(updateTime, 10);
+window.onload = function () {
+  
+    var seconds = 00; 
+    var tens = 00; 
+    var appendTens = document.getElementById("tens")
+    var appendSeconds = document.getElementById("seconds")
+    var buttonStart = document.getElementById('button-start');
+    var buttonStop = document.getElementById('button-stop');
+    var buttonReset = document.getElementById('button-reset');
+    var Interval ;
+  
+    buttonStart.onclick = function() {
+      
+      clearInterval(Interval);
+       Interval = setInterval(startTimer, 10);
+    }
+    
+      buttonStop.onclick = function() {
+         clearInterval(Interval);
+    }
+    
+  
+    buttonReset.onclick = function() {
+       clearInterval(Interval);
+      tens = "00";
+        seconds = "00";
+      appendTens.innerHTML = tens;
+        appendSeconds.innerHTML = seconds;
+    }
+    
+     
+    
+    function startTimer () {
+      tens++; 
+      
+      if(tens <= 9){
+        appendTens.innerHTML = "0" + tens;
+      }
+      
+      if (tens > 9){
+        appendTens.innerHTML = tens;
+        
+      } 
+      
+      if (tens > 99) {
+        console.log("seconds");
+        seconds++;
+        appendSeconds.innerHTML = "0" + seconds;
+        tens = 0;
+        appendTens.innerHTML = "0" + 0;
+      }
+      
+      if (seconds > 9){
+        appendSeconds.innerHTML = seconds;
+      }
+    
+    }
+    
+  
   }
-  isRunning = !isRunning;
-  startStopButton.textContent = isRunning ? 'Stop' : 'Start';
-}
-
-function resetTimer() {
-  clearInterval(interval);
-  elapsedTime = 0;
-  updateTime();
-  isRunning = false;
-  startStopButton.textContent = 'Start';
-}
-
-// Event Listeners
-startStopButton.addEventListener('click', startStopTimer);
-resetButton.addEventListener('click', resetTimer);
-
-// Initial Setup
-updateTime();
 
 
